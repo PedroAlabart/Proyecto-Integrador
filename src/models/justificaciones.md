@@ -1,0 +1,1 @@
+Las clases creadas tienen en su atributo id, getters pero no setters. Esto es para que sea fácil de acceder pero difícil de modificar
