@@ -1,7 +1,11 @@
--- Database Creation
-CREATE DATABASE IF NOT EXISTS db;
-USE db;
 
+-- =======================
+-- Schema
+-- ========================
+
+-- Database Creation
+CREATE DATABASE IF NOT EXISTS SalesTransactions;
+USE SalesTransactions;
 
 -- Table creation
 -- CATEGORIES
@@ -17,7 +21,7 @@ CREATE TABLE IF NOT EXISTS products (
     Price DECIMAL(10,0),
     CategoryID INT,
     Class VARCHAR(45),
-    ModifyDate DATE,
+    ModifyDate DATETIME,
     Resistant VARCHAR(45),
     IsAllergic VARCHAR(10),
     ViabilityDays DECIMAL(3,0),
@@ -79,7 +83,32 @@ CREATE TABLE IF NOT EXISTS sales (
     FOREIGN KEY (CountryID) REFERENCES countries(CountryID)
 );
 
+-- =======================
+-- Functions
+-- ========================
+DELIMITER $$
+CREATE FUNCTION IF NOT EXISTS convert_custom_time(input VARCHAR(10)) RETURNS TIME
+DETERMINISTIC
+BEGIN
+    DECLARE h INT;
+    DECLARE m_decimal DECIMAL(5,2);
+    DECLARE total_seconds INT;
 
+    SET h = FLOOR(SUBSTRING_INDEX(input, ':', 1));
+    SET m_decimal = CAST(SUBSTRING_INDEX(input, ':', -1) AS DECIMAL(5,2));
+
+    SET total_seconds = h * 3600 + FLOOR(m_decimal) * 60 + ROUND((m_decimal - FLOOR(m_decimal)) * 60);
+
+    RETURN SEC_TO_TIME(total_seconds);
+END $$
+DELIMITER ;
+
+
+
+
+-- =======================
+-- Data Loading
+-- ========================
 
 -- Table data pumping
 
@@ -87,6 +116,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 
 -- CATEGORIES
 LOAD DATA INFILE 'C:/Users/Pedro/Desktop/SoyHenry/Proyecto-Integrador/data/categories.csv'
+IGNORE
 INTO TABLE categories
 FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n'
@@ -94,6 +124,7 @@ IGNORE 1 LINES;
 
 -- COUNTRIES
 LOAD DATA INFILE 'C:/Users/Pedro/Desktop/SoyHenry/Proyecto-Integrador/data/countries.csv'
+IGNORE
 INTO TABLE countries
 FIELDS TERMINATED BY ',' 
 LINES TERMINATED BY '\n' 
@@ -101,6 +132,7 @@ IGNORE 1 LINES;
 
 -- CITIES
 LOAD DATA INFILE 'C:/Users/Pedro/Desktop/SoyHenry/Proyecto-Integrador/data/cities.csv'
+IGNORE
 INTO TABLE cities
 FIELDS TERMINATED BY ',' 
 LINES TERMINATED BY '\n' 
@@ -108,6 +140,7 @@ IGNORE 1 LINES;
 
 -- CUSTOMERS
 LOAD DATA INFILE 'C:/Users/Pedro/Desktop/SoyHenry/Proyecto-Integrador/data/customers.csv'
+IGNORE
 INTO TABLE customers
 FIELDS TERMINATED BY ',' 
 LINES TERMINATED BY '\n' 
@@ -117,14 +150,15 @@ IGNORE 1 LINES
   FirstName,
   @MiddleInitial,
   LastName,
-  Email,
-  Phone
+  CityID,
+  Address
 )
 SET
-  MiddleInitial = LEFT(NULLIF(@MiddleInitial, 'NULL'), 1);
+  MiddleInitial = LEFT(NULLIF(@MiddleInitial, 'NULL'), 1); -- Transforms the string "NULL" into a real null type
 
 -- EMPLOYEES
 LOAD DATA INFILE 'C:/Users/Pedro/Desktop/SoyHenry/Proyecto-Integrador/data/employees.csv'
+IGNORE
 INTO TABLE employees
 FIELDS TERMINATED BY ',' 
 LINES TERMINATED BY '\n' 
@@ -132,19 +166,34 @@ IGNORE 1 LINES;
 
 -- PRODUCTS
 LOAD DATA INFILE 'C:/Users/Pedro/Desktop/SoyHenry/Proyecto-Integrador/data/products.csv'
+IGNORE
 INTO TABLE products
 FIELDS TERMINATED BY ',' 
 LINES TERMINATED BY '\n' 
-IGNORE 1 LINES;
+IGNORE 1 LINES
+(
+    ProductID,
+    ProductName,
+    Price,
+    CategoryID,
+    Class,
+    @ModifyDate,
+    Resistant,
+    IsAllergic
+)
+SET ModifyDate = convert_custom_time(@ModifyDate);
+
 
 -- SALES
 LOAD DATA INFILE 'C:/Users/Pedro/Desktop/SoyHenry/Proyecto-Integrador/data/sales.csv'
+IGNORE
 INTO TABLE sales
 FIELDS TERMINATED BY ',' 
 LINES TERMINATED BY '\n' 
 IGNORE 1 LINES;
 
 SET FOREIGN_KEY_CHECKS = 1;
+
 
 
 
