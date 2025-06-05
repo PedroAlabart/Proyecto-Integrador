@@ -1,9 +1,45 @@
+from datetime import date
+from city import City
+from abstracts import User
+
 class User:
-    def __init__(self, first_name, middle_initial, last_name, city_id):
-        self.first_name = first_name
-        self.middle_initial = middle_initial
-        self.last_name = last_name
-        self.city_id = city_id
+    def __init__(self, first_name: str, middle_initial: str, last_name: str, city_id: City):
+        self.__first_name = first_name
+        self.__middle_initial = middle_initial
+        self.__last_name = last_name
+        self.__city_id = city_id
+
+    @property
+    def first_name(self):
+        return self.__first_name
+
+    @first_name.setter
+    def first_name(self, value):
+        self.__first_name = value
+
+    @property
+    def middle_initial(self):
+        return self.__middle_initial
+
+    @middle_initial.setter
+    def middle_initial(self, value):
+        self.__middle_initial = value
+
+    @property
+    def last_name(self):
+        return self.__last_name
+
+    @last_name.setter
+    def last_name(self, value):
+        self.__last_name = value
+
+    @property
+    def city_id(self):
+        return self.__city_id
+
+    @city_id.setter
+    def city_id(self, value):
+        self.__city_id = value
 
     def full_name(self):
         parts = [self.first_name]

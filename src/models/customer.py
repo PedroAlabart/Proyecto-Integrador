@@ -1,22 +1,45 @@
-from datetime import date
 from city import City
+from abstracts import User
 
-
-class Customer:
+class Customer(User):
     def __init__(self, customer_id: int, first_name: str, middle_initial: str,
-                 last_name: str, city: City, address: str, birth_date: date):
+                 last_name: str, city: City, address: str):
+        super().__init__(first_name, middle_initial, last_name, city)
         self.__id = customer_id
-        self.__first_name = first_name
-        self.__middle_initial = middle_initial
-        self.__last_name = last_name
         self.__city = city
         self.__address = address
-        self.__birth_date = birth_date
 
-    def full_name(self):
-        if self.__middle_initial:
-            return f"{self.__first_name} {self.__middle_initial}. {self.__last_name}"
-        return f"{self.__first_name} {self.__last_name}"
+    # id solo getter
+    @property
+    def id(self):
+        return self.__id
+
+    # city getter y setter
+    @property
+    def city(self):
+        return self.__city
+
+    @city.setter
+    def city(self, value):
+        self.__city = value
+
+    # address getter y setter
+    @property
+    def address(self):
+        return self.__address
+
+    @address.setter
+    def address(self, value):
+        self.__address = value
+
+    # birth_date getter y setter
+    @property
+    def birth_date(self):
+        return self.__birth_date
+
+    @birth_date.setter
+    def birth_date(self, value):
+        self.__birth_date = value
 
     def __str__(self):
         return f"Customer[{self.__id}]: {self.full_name()} ({self.__city})"

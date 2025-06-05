@@ -17,13 +17,13 @@ CREATE TABLE IF NOT EXISTS categories(
 -- PRODUCTS
 CREATE TABLE IF NOT EXISTS products (
     ProductID INT PRIMARY KEY,
-    ProductName VARCHAR(45),
-    Price DECIMAL(10,0),
-    CategoryID INT,
-    Class VARCHAR(45),
+    ProductName VARCHAR(45) NOT NULL,
+    Price DECIMAL(10,2) NOT NULL, -- Opte por 3 decimales
+    CategoryID INT NOT NULL,
+    Class VARCHAR(45) DEFAULT 'Uknnown',
     ModifyDate DATETIME,
-    Resistant VARCHAR(45),
-    IsAllergic VARCHAR(10),
+    Resistant VARCHAR(45) DEFAULT 'Uknnown',
+    IsAllergic VARCHAR(10) DEFAULT 'Uknnown',
     ViabilityDays DECIMAL(3,0),
     FOREIGN KEY (CategoryID) REFERENCES categories(CategoryID)
 );
@@ -103,6 +103,22 @@ BEGIN
 END $$
 DELIMITER ;
 
+DELIMITER $$
+CREATE FUNCTION IF NOT EXISTS separate_address_from_address_number(input VARCHAR(10)) RETURNS TIME
+DETERMINISTIC
+BEGIN
+    DECLARE h INT;
+    DECLARE m_decimal DECIMAL(5,2);
+    DECLARE total_seconds INT;
+
+    SET h = FLOOR(SUBSTRING_INDEX(input, ':', 1));
+    SET m_decimal = CAST(SUBSTRING_INDEX(input, ':', -1) AS DECIMAL(5,2));
+
+    SET total_seconds = h * 3600 + FLOOR(m_decimal) * 60 + ROUND((m_decimal - FLOOR(m_decimal)) * 60);
+
+    RETURN SEC_TO_TIME(total_seconds);
+END $$
+DELIMITER ;
 
 
 
