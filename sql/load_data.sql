@@ -4,6 +4,8 @@
 -- ========================
 
 -- Database Creation
+DROP DATABASE SalesTransactions;
+
 CREATE DATABASE IF NOT EXISTS SalesTransactions;
 USE SalesTransactions;
 
@@ -87,37 +89,27 @@ CREATE TABLE IF NOT EXISTS sales (
 -- Functions
 -- ========================
 DELIMITER $$
-CREATE FUNCTION IF NOT EXISTS convert_custom_time(input VARCHAR(10)) RETURNS TIME
+
+CREATE FUNCTION convert_time_to_seconds(input VARCHAR(10)) RETURNS INT
 DETERMINISTIC
 BEGIN
     DECLARE h INT;
-    DECLARE m_decimal DECIMAL(5,2);
+    DECLARE m DECIMAL(5,2);
     DECLARE total_seconds INT;
 
-    SET h = FLOOR(SUBSTRING_INDEX(input, ':', 1));
-    SET m_decimal = CAST(SUBSTRING_INDEX(input, ':', -1) AS DECIMAL(5,2));
-
-    SET total_seconds = h * 3600 + FLOOR(m_decimal) * 60 + ROUND((m_decimal - FLOOR(m_decimal)) * 60);
-
-    RETURN SEC_TO_TIME(total_seconds);
-END $$
-DELIMITER ;
-
-DELIMITER $$
-CREATE FUNCTION IF NOT EXISTS separate_address_from_address_number(input VARCHAR(10)) RETURNS TIME
-DETERMINISTIC
-BEGIN
-    DECLARE h INT;
-    DECLARE m_decimal DECIMAL(5,2);
-    DECLARE total_seconds INT;
+    -- Returns 0 if the date is null.
+    IF input IS NULL OR input = '' THEN 
+        RETURN 0;
+    END IF;
 
     SET h = FLOOR(SUBSTRING_INDEX(input, ':', 1));
-    SET m_decimal = CAST(SUBSTRING_INDEX(input, ':', -1) AS DECIMAL(5,2));
+    SET m = CAST(SUBSTRING_INDEX(input, ':', -1) AS DECIMAL(5,2));
 
-    SET total_seconds = h * 3600 + FLOOR(m_decimal) * 60 + ROUND((m_decimal - FLOOR(m_decimal)) * 60);
+    SET total_seconds = h * 3600 + FLOOR(m) * 60 + ROUND((m - FLOOR(m)) * 60);
 
-    RETURN SEC_TO_TIME(total_seconds);
+    RETURN total_seconds;
 END $$
+
 DELIMITER ;
 
 
@@ -180,6 +172,8 @@ FIELDS TERMINATED BY ','
 LINES TERMINATED BY '\n' 
 IGNORE 1 LINES;
 
+
+SET @now_fixed = NOW(); -- Prevents having to call the NOW function for every row in products and sales csvs
 -- PRODUCTS
 LOAD DATA INFILE 'C:/Users/Pedro/Desktop/SoyHenry/Proyecto-Integrador/data/products.csv'
 IGNORE
@@ -197,8 +191,8 @@ IGNORE 1 LINES
     Resistant,
     IsAllergic
 )
-SET ModifyDate = convert_custom_time(@ModifyDate);
-
+SET 
+    ModifyDate = @now_fixed - INTERVAL convert_time_to_seconds(NULLIF(@ModifyDate, '')) SECOND;
 
 -- SALES
 LOAD DATA INFILE 'C:/Users/Pedro/Desktop/SoyHenry/Proyecto-Integrador/data/sales.csv'
@@ -206,11 +200,25 @@ IGNORE
 INTO TABLE sales
 FIELDS TERMINATED BY ',' 
 LINES TERMINATED BY '\n' 
-IGNORE 1 LINES;
+IGNORE 1 LINES
+(
+    SalesID,
+    SalesPersonID,
+    CustomerID,
+    ProductID,
+    Quantity,
+    Discount,
+    TotalPrice,
+    @SalesDate,
+    TransactionNumber
+)
+SET 
+    SalesDate = @now_fixed - INTERVAL convert_time_to_seconds(NULLIF(@SalesDate, '')) SECOND;
+
 
 SET FOREIGN_KEY_CHECKS = 1;
 
 
-
+SELECT * FROM sales;
 
 
