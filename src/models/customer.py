@@ -1,5 +1,5 @@
 from city import City
-from abstracts import User
+from models_helpers.abstracts import User
 
 class Customer(User):
     def __init__(self, customer_id: int, first_name: str, middle_initial: str,
@@ -32,14 +32,6 @@ class Customer(User):
     def address(self, value):
         self.__address = value
 
-    # birth_date getter y setter
-    @property
-    def birth_date(self):
-        return self.__birth_date
-
-    @birth_date.setter
-    def birth_date(self, value):
-        self.__birth_date = value
-
     def __str__(self):
         return f"Customer[{self.__id}]: {self.full_name()} ({self.__city})"
+    
