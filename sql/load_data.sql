@@ -76,13 +76,9 @@ CREATE TABLE IF NOT EXISTS sales (
     TotalPrice DECIMAL(20,2),
     SalesDate DATETIME,
     TransactionNumber VARCHAR(255),
-    CityID INT,
-    CountryID INT,
     FOREIGN KEY (SalesPersonID) REFERENCES employees(EmployeeID),
     FOREIGN KEY (CustomerID) REFERENCES customers(CustomerID),
-    FOREIGN KEY (ProductID) REFERENCES products(ProductID),
-    FOREIGN KEY (CityID) REFERENCES cities(CityID),
-    FOREIGN KEY (CountryID) REFERENCES countries(CountryID)
+    FOREIGN KEY (ProductID) REFERENCES products(ProductID)
 );
 
 -- =======================
@@ -118,9 +114,7 @@ DELIMITER ;
 -- Data Loading
 -- ========================
 
--- Table data pumping
-
-SET FOREIGN_KEY_CHECKS = 0;
+SET FOREIGN_KEY_CHECKS = 0; -- Esta linea evita que tenga que dumpear las tablas en un orden en particular
 
 -- CATEGORIES
 LOAD DATA INFILE 'C:/Users/Pedro/Desktop/SoyHenry/Proyecto-Integrador/data/categories.csv'
@@ -219,6 +213,5 @@ SET
 SET FOREIGN_KEY_CHECKS = 1;
 
 
-SELECT * FROM sales;
 
 
