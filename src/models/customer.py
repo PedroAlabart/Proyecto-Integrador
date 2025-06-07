@@ -1,10 +1,9 @@
-from city import City
-from models_helpers.abstracts import User
+from .city import City
+from ..models_helpers import User
 
 class Customer(User):
-    def __init__(self, customer_id: int, first_name: str, middle_initial: str,
-                 last_name: str, city: City, address: str):
-        super().__init__(first_name, middle_initial, last_name, city)
+    def __init__(self, customer_id: int, first_name: str, last_name: str, city: City, address: str, middle_initial: str = ""):
+        super().__init__(first_name, middle_initial=middle_initial, last_name=last_name, city=city)
         self.__id = customer_id
         self.__city = city
         self.__address = address

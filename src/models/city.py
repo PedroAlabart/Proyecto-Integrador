@@ -1,4 +1,4 @@
-from country import Country
+from .country import Country
 
 class City:
     def __init__(self, city_id: int, name: str, zipcode: str, country: Country):

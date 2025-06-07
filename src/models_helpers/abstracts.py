@@ -1,13 +1,11 @@
-from datetime import date
 from ..models.city import City
-from models_helpers.abstracts import User
 
 class User:
-    def __init__(self, first_name: str, middle_initial: str, last_name: str, city_id: City):
+    def __init__(self, first_name: str, *, middle_initial: str = "", last_name: str, city: City):
         self.__first_name = first_name
         self.__middle_initial = middle_initial
         self.__last_name = last_name
-        self.__city_id = city_id
+        self.__city = city
 
     @property
     def first_name(self):
@@ -34,12 +32,12 @@ class User:
         self.__last_name = value
 
     @property
-    def city_id(self):
-        return self.__city_id
+    def city(self):
+        return self.__city
 
-    @city_id.setter
-    def city_id(self, value):
-        self.__city_id = value
+    @city.setter
+    def city(self, value):
+        self.__city = value
 
     def full_name(self):
         parts = [self.first_name]
