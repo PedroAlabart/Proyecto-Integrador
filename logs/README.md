@@ -1,0 +1,1 @@
+El log unknown data type registra cuando se intenta usar un data type no valido en als columnas Resistant y Class de procucts. Con el tiempo se podria expandir a mas columnas.
