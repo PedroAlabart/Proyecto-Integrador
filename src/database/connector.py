@@ -22,7 +22,7 @@ class DatabaseConnection:
         connection_url = f"mysql+pymysql://{user}:{password}@{host}:{port}/{db}"
         self.engine: Engine = create_engine(connection_url,
                                             pool_pre_ping=True, # Create Engine tiene lazy instiation. El atributo pool_pre_ping hace un ping para ver que la db funciona
-                                            echo=True #Activa un log mas completo
+                                            #echo=True #Activa un log mas completo
                                             )
         self.Session = sessionmaker(bind=self.engine)
 

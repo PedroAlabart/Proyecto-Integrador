@@ -1,4 +1,4 @@
-from src.database.querier_helper import (
+from src.database.queriy_builder_helper import (
     SelectClause,
     FromClause,
     WhereClause,

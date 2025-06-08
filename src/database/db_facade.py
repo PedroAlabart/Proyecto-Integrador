@@ -1,6 +1,6 @@
 from sqlalchemy import text
 from src.database.connector import DatabaseConnection
-from src.database.querier import SQLQueryBuilder
+from src.database.query_builder import SQLQueryBuilder
 from src.database.dataframe_prettifier import prettify_output
 import pandas as pd
 

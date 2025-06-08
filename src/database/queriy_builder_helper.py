@@ -1,7 +1,5 @@
 from abc import ABC, abstractmethod
 
-from abc import ABC, abstractmethod
-
 class Clause(ABC):
     "ABC para clausulas"
     @abstractmethod
