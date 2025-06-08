@@ -1,17 +1,20 @@
-from abc import ABC, abstractmethod
+from abc import ABC
+from ..logger.logger_factory import LoggerFactory
+from ..logger.logger_types import DataTypeLogger
 
-from ..logger.logger import LoggerFactory
 log = LoggerFactory.get_logger("unknown_data_type")
-
+data_type_logger = DataTypeLogger(log)
 
 class DataType(ABC):
     ALLOWED_VALUES = set()
 
     def __init__(self, value, when_unknown="Unknown"):
         if value not in self.ALLOWED_VALUES:
-            log.info(
-                f"Se intentó insertar '{value}' como {self.__class__.__name__}. "
-                f"Debe ser uno de {self.ALLOWED_VALUES}. Se le asigna '{when_unknown}' al no ser reconocido."
+            data_type_logger.log_invalid_value(
+                self.__class__.__name__,
+                value,
+                self.ALLOWED_VALUES,
+                when_unknown
             )
             self.value = when_unknown
         else:

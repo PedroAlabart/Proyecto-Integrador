@@ -20,9 +20,12 @@ class Sale:
         self.__product = product
         self.__quantity = quantity
         self.__discount = discount
-        self.__total_price = product.price * quantity * discount 
         self.__sale_date = sale_date
         self.__transaction_number = transaction_number
+
+    @property
+    def total_price(self):
+        return self.quantity * self.product.price * (1 - self.discount)
 
     @property
     def id(self):
@@ -70,9 +73,6 @@ class Sale:
     def discount(self, value: float):
         self.__discount = value
 
-    @property
-    def total_price(self):
-        return self.__total_price
 
     @property
     def sale_date(self):

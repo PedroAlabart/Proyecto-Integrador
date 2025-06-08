@@ -51,7 +51,7 @@ class Product:
 
     @class_type.setter
     def class_type(self, value: str):
-        self.__class_type = value
+        self.__class_type = ClassDataType(value)
 
     @property
     def modify_date(self):
@@ -67,7 +67,7 @@ class Product:
 
     @resistant.setter
     def resistant(self, value: str):
-        self.__resistant = value
+        self.__resistant = ResistantDataType(value)
 
     @property
     def is_allergic(self):

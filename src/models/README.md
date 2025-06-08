@@ -1,17 +1,21 @@
-📁 Estructura del Modulo
-Este modulo contiene un archivo .py por cada tabla representada en los archivos CSV.
+## 📁 Estructura del Módulo
 
-Cada clase está diseñada siguiendo principios de encapsulamiento, con el objetivo de evitar modificaciones erróneas en sus atributos. Una excepción a esto es el atributo ID, que no incluye un método setter, justamente para prevenir su alteración una vez definido.
+Este módulo contiene un archivo `.py` por cada tabla representada en los archivos CSV.
 
-Habia una superposicion de atributos entre las clases Customers y Employees, por lo que cree en abstracts.py una clase para que hereden.
+Cada clase está diseñada siguiendo principios de **encapsulamiento**, con el objetivo de evitar modificaciones erróneas en sus atributos. Una excepción a esto es el atributo `ID`, que **no incluye un método setter**, precisamente para prevenir su alteración una vez definido.
 
-En la entidad product tuve que cambiar el atributo class a class_type porque la palabra class es un termino reservado en python.
+Se identificó una superposición de atributos entre las clases `Customers` y `Employees`, por lo que se creó en `abstracts.py` una clase base que ambas heredan.
 
-Agregue un constructor de data_types para los valores categoricos como Class y Resistant(ambos atributos de Product) para limitar los valores posibles.
+En la entidad `Product`, se cambió el atributo `class` a `class_type` ya que `class` es una palabra reservada en Python.
 
-La clase Sale, tiene el atributo TotalPrice. En la clase, este numero se calcula usando product.price, quantity y discount. En la data mockup que nos dan este TotalPrice es un numero random.
+Se agregó un **constructor de `data_types`** para los valores categóricos como `Class` y `Resistant` (ambos atributos de `Product`) con el objetivo de **limitar los valores posibles**.
 
-La clase Sale tampoco tiene un setter para la transaction_number porque no me parece que sea algo que se deberia modificar facil.
+La clase `Sale` incluye el atributo `TotalPrice`. Sin embargo, en la clase este valor se **calcula** usando `product.price`, `quantity` y `discount`. En la data brindada por Henry, este campo es un número aleatorio.
 
-🧠 Consideraciones para futuras iteraciones
-Como Ingeniero de Datos, propondría en futuras etapas conversar con los stakeholders para comenzar a recolectar la fecha de nacimiento de los customes. Esta información permitiría realizar análisis más avanzados, como identificar patrones de compra según la edad. Con esos insights, se podrían orientar campañas publicitarias más efectivas hacia los segmentos adecuados del público.
+Asimismo, la clase `Sale` no incluye un setter para `transaction_number` dado que no debería ser modificado de forma trivial una vez asignado.
+
+---
+
+## 🧠 Consideraciones para futuras iteraciones
+
+Como Ingeniero de Datos, propondría en futuras etapas mantener conversaciones con los stakeholders para comenzar a **recolectar la fecha de nacimiento de los `customers`**. Esta información permitiría realizar análisis más avanzados, como identificar patrones de compra según la edad. Con estos insights, se podrían orientar **campañas publicitarias más efectivas** hacia los segmentos adecuados del público.
