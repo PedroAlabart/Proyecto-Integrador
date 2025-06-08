@@ -12,7 +12,7 @@ class DatabaseFacade:
         """
         Ejecuta una consulta SQL, ya sea construida manualmente como string
         o generada mediante SQLQueryBuilder.
-
+        Se reconoce que esta función es vulnerable a inyecciones SQL; sin embargo, se prevé su uso exclusivamente en el entorno interno de la empresa.
         Args:
             query_or_builder (str | SQLQueryBuilder): Consulta SQL o builder.
 
