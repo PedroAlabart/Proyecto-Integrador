@@ -27,6 +27,24 @@ Contiene las representaciones de las entidades del negocio (Customers, Employees
 * Cálculo automático del `TotalPrice` en `Sale`.
 * Prevención de modificación del `transaction_number`.
 
+---
+
+### `sql`
+
+Contiene el archivo load_data.sql utilizado para importar la información desde archivos CSV hacia las tablas de la base de datos de manera automatizada y estructurada.
+
+---
+
+### `logger`
+
+Registro de errores para tipos de datos inválidos, centrado actualmente en los campos Resistant y Class del producto. 
+Cuenta con un factory para crear diferentes archivos log. Ademas, permite:
+
+- Monitorear entradas no válidas en datos categóricos.
+
+- Generar logs estructurados (JSON) con detalles sobre el error detectado.
+
+Pensado como base para una futura validación automatizada de calidad de datos.
 
 ---
 
